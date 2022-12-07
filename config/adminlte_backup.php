@@ -235,36 +235,53 @@ return [
             'icon'        => 'fa fa-fw fa-truck',
             'label_color' => 'warning',
         ],
-        ['header' => 'Lavadero'],
         [
-            'text'        => 'Clientes',
-            'icon'        => 'far fa-fw fa-user',
-            'url'         => 'clientes',
-            'label_color' => 'warning',
-        ],
-        [
-            'text'        => 'Limpiezas',
-            'icon'        => 'fa fa-fw fa-shower',
-            'url'         => 'limpiezas',
-            'label_color' => 'warning',
-        ],
-        [
-            'text'        => 'Citas',
-            'icon'        => 'fa fa-fw fa-calendar',
-            'url'         => 'Evento/form',
-            'label_color' => 'warning',
-        ],
-        ['header' => 'Configuración de la cuenta'],
-        [
-            'text' => 'Perfil de Usuario',
-            'url'  => 'user/profile',
+            'text'    => 'Configuración',
             'icon' => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Perfil de Usuario',
+                    'url'  => 'user/profile',
+                    'icon' => 'fas fa-fw fa-user',
+                    'label_color' => 'warning',
+                ],
+            ],
         ],
-        ['header' => 'Aplicación'],
         [
-            'text' => 'Usuarios',
-            'url'  => 'usuarios',
+            'text'    => 'Aplicación',
             'icon' => 'fas fa-fw fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'url'  => 'usuarios',
+                    'icon' => 'fas fa-fw fa-users',
+                    'label_color' => 'warning',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Lavadero',
+            'icon'        => 'fa fa-fw fa-shower',
+            'submenu' => [
+                [
+                    'text' => 'Clientes',
+                    'icon'        => 'far fa-fw fa-user',
+                    'url'         => 'clientes',
+                    'label_color' => 'warning',
+                ],
+                [
+                    'text'        => 'Limpiezas',
+                    'icon'        => 'fa fa-fw fa-shower',
+                    'url'         => 'limpiezas',
+                    'label_color' => 'warning',
+                ],
+                [
+                    'text'        => 'Citas',
+                    'icon'        => 'fa fa-fw fa-calendar',
+                    'url'         => 'Evento/form',
+                    'label_color' => 'warning',
+                ],
+            ],
         ]
     ],
 

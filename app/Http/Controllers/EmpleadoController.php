@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empleado;
+use Illuminate\Support\Facades\DB;
 
 class EmpleadoController extends Controller
 {
@@ -19,7 +20,10 @@ class EmpleadoController extends Controller
 
     // Función para añadir empleado
     public function create() {
-        return view('empleado.create');
+        $delegacionesEmpleados = DB::select("SELECT id, nombreEmpresa FROM delegacions");
+        $cargosEmpleados = DB::select("SELECT id, nombreCargo FROM cargos");
+
+        return view('empleado.create', ['delegacionesEmpleados' => $delegacionesEmpleados, 'cargosEmpleados' => $cargosEmpleados]);
     }
 
     public function store(Request $request) {
@@ -29,14 +33,26 @@ class EmpleadoController extends Controller
 
         $empleados = new Empleado();
 
+        $IdDelegacionAsignado = $request->get('empresa');
+        $idDelegacion = stristr($IdDelegacionAsignado, "-", true );
+        $delegacionA = stristr($IdDelegacionAsignado, "-", false );
+        $delegacion = substr($delegacionA, 1);
+
+        $IdCargoAsignado = $request->get('cargo');
+        $idCargo = stristr($IdCargoAsignado, "-", true );
+        $cargoA = stristr($IdCargoAsignado, "-", false );
+        $cargo = substr($cargoA, 1);
+
         $empleados-> nombre = $request->get('nombre');
         $empleados-> apellidos = $request->get('apellidos');
         $empleados-> documento = $request->get('documento');
         $empleados-> num_documento = $request->get('num_documento');
         $empleados-> fechaNacimiento = $request->get('fechaNacimiento');
         $empleados-> estado = $request->get('estado');
-        $empleados-> empresa = $request->get('empresa');
-        $empleados-> cargo = $request->get('cargo');
+        $empleados-> empresa = $delegacion;
+        $empleados-> cargo = $cargo;
+        $empleados-> id_delegacion = $idDelegacion;
+        $empleados-> id_cargo = $idCargo;
 
         $empleados->save();
 
@@ -46,11 +62,25 @@ class EmpleadoController extends Controller
     // Función para el botón de editar del dataTables
     public function edit($id) {
         $empleado = Empleado::find($id);
-        return view('empleado.edit')->with('empleado',$empleado);
+
+        $delegacionesEdit = DB::select("SELECT id, nombreEmpresa FROM delegacions");
+        $cargosEdit = DB::select("SELECT id, nombreCargo FROM cargos");
+
+        return view('empleado.edit', ['delegacionesEdit' => $delegacionesEdit, 'cargosEdit' => $cargosEdit])->with('empleado',$empleado);
     }
 
     public function update(Request $request, $id) {
         $empleado = Empleado::find($id);
+
+        $IdDelegacionAsignado = $request->get('empresa');
+        $idDelegacion = stristr($IdDelegacionAsignado, "-", true );
+        $delegacionA = stristr($IdDelegacionAsignado, "-", false );
+        $delegacion = substr($delegacionA, 1);
+
+        $IdCargoAsignado = $request->get('cargo');
+        $idCargo = stristr($IdCargoAsignado, "-", true );
+        $cargoA = stristr($IdCargoAsignado, "-", false );
+        $cargo = substr($cargoA, 1);
 
         $empleado-> nombre = $request->get('nombre');
         $empleado-> apellidos = $request->get('apellidos');
@@ -58,8 +88,10 @@ class EmpleadoController extends Controller
         $empleado-> num_documento = $request->get('num_documento');
         $empleado-> fechaNacimiento = $request->get('fechaNacimiento');
         $empleado-> estado = $request->get('estado');
-        $empleado-> empresa = $request->get('empresa');
-        $empleado-> cargo = $request->get('cargo');
+        $empleado-> empresa = $delegacion;
+        $empleado-> cargo = $cargo;
+        $empleado-> id_delegacion = $idDelegacion;
+        $empleado-> id_cargo = $idCargo;
 
         $empleado->save();
 

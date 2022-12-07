@@ -19,6 +19,8 @@ Route::resource('usuarios', 'App\Http\Controllers\UsuarioController');
 Route::resource('clientes', 'App\Http\Controllers\ClienteController');
 Route::resource('codigopostales', 'App\Http\Controllers\CodigoPostalController');
 Route::resource('delegaciones', 'App\Http\Controllers\DelegacionController');
+Route::resource('cargos', 'App\Http\Controllers\CargoController');
+Route::resource('alquileres', 'App\Http\Controllers\AlquilerController');
 
 Route::get('Evento/form','App\Http\Controllers\ControllerEvent@form');
 Route::post('Evento/create','App\Http\Controllers\ControllerEvent@create');

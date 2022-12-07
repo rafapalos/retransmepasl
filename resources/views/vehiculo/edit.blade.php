@@ -6,14 +6,14 @@
     <h2>Editar Vehiculos</h2>
 @stop
 
+@section('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@stop
+
 @section('content')
     <form action="/vehiculos/{{$vehiculo->id}}" method="POST">
         @csrf
         @method('PUT')
-        <!-- <div class="mb-3">
-            <label for="" class="form-label">Nº Vehiculo</label>
-            <input id="numVehiculo" name="numVehiculo" type="text" class="form-control" value="{{$vehiculo->id}}" disabled>
-        </div> -->
         <div class="mb-3">
             <label for="" class="form-label">Marca</label>
             <input id="marca" name="marca" type="text" maxLength="15" pattern="[A-Za-z ]{1,15}" class="form-control" value="{{$vehiculo->marca}}" required>
@@ -29,10 +29,10 @@
         <div class="mb-3">
             <label for="" class="form-label">Empresa</label>
             <select class="form-control" id="empresa" name="empresa" required>
-                <option class="optionValueEmpresa" value="{{$vehiculo->empresa}}">{{$vehiculo->empresa}}</option>
-                <option class="optionGLS" value="GLS">GLS</option>
-                <option class="optionSEUR" value="SEUR">SEUR</option>
-                <option class="optionCorreosExpress" value="CorreosExpress">CorreosExpress</option>
+            <option value="">Seleccionar opción</option>
+            @foreach ($delegacionesEdit as $delegacionesEdit)
+            <option value="{{$delegacionesEdit->id}}-{{$delegacionesEdit->nombreEmpresa}}">{{$delegacionesEdit->nombreEmpresa}}</option>
+            @endforeach
             </select>
         </div>
         <div class="mb-3">
@@ -56,11 +56,10 @@
         <div class="mb-3" id="divAlquiler">
             <label for="" class="form-label">Alquiler</label>
             <select class="form-control" id="alquiler" name="alquiler">
-                <option class="optionValueAlquiler" value="{{$vehiculo->alquiler}}">{{$vehiculo->alquiler}}</option>
-                <option class="optionNorthgate" value="Northgate">Northgate</option>
-                <option class="optionPinveco" value="Pinveco">Pinveco</option>
-                <option class="optionEnterprise" value="Enterprise">Enterprise</option>
-                <option class="optionLogicar" value="Logicar">Logicar</option>
+                <option value="">Seleccionar opción</option>
+                @foreach ($alquileresEdit as $alquileresEdit)
+                <option value="{{$alquileresEdit->id}}-{{$alquileresEdit->nombreEmpresa}}">{{$alquileresEdit->nombreEmpresa}}</option>
+                @endforeach
             </select>
         </div>
         <div class="mb-3" id="divFechaAlquilerDesde">
@@ -77,7 +76,26 @@
 @stop
 
 @section('js')
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script type="text/javascript">
+    // SELECT RESPONSIVE
+    $(document).ready(function() {
+        $('#empresa').select2({
+            language: "es",
+            theme: "classic",
+            width: '100%'
+        });
+
+        $('#alquiler').select2({
+            language: "es",
+            theme: "classic",
+            width: '100%'
+        });
+
+    });
+    
     $('#divAlquiler, #divFechaAlquilerDesde, #divFechaAlquilerHasta').hide();
 
 	// Propiedad
@@ -127,21 +145,21 @@
     }
 
     // SELECT EMPRESA
-    var optionEmpresa = $('.optionValueEmpresa').val();
+    // var optionEmpresa = $('.optionValueEmpresa').val();
 
-    if (optionEmpresa == 'GLS') {
-        $('.optionGLS').hide();
-        $('.optionSEUR').show();
-        $('.optionCorreosExpress').show();
-    } else if (optionEmpresa == 'SEUR') {
-        $('.optionGLS').show();
-        $('.optionSEUR').hide();
-        $('.optionCorreosExpress').show();
-    } else if (optionEmpresa == 'CorreosExpress') {
-        $('.optionGLS').show();
-        $('.optionSEUR').show();
-        $('.optionCorreosExpress').hide();
-    }
+    // if (optionEmpresa == 'GLS') {
+    //     $('.optionGLS').hide();
+    //     $('.optionSEUR').show();
+    //     $('.optionCorreosExpress').show();
+    // } else if (optionEmpresa == 'SEUR') {
+    //     $('.optionGLS').show();
+    //     $('.optionSEUR').hide();
+    //     $('.optionCorreosExpress').show();
+    // } else if (optionEmpresa == 'CorreosExpress') {
+    //     $('.optionGLS').show();
+    //     $('.optionSEUR').show();
+    //     $('.optionCorreosExpress').hide();
+    // }
 
     // SELECT PROPIEDAD
     var optionPropiedad = $('.optionValuePropiedad').val();
@@ -157,29 +175,29 @@
     }
 
     // SELECT ALQUILER
-    var optionAlquiler = $('.optionValueAlquiler').val();
+    // var optionAlquiler = $('.optionValueAlquiler').val();
 
-    if (optionAlquiler == 'Northgate') {
-        $('.optionNorthgate').hide();
-        $('.optionPinveco').show();
-        $('.optionEnterprise').show();
-        $('.optionLogicar').show();
-    } else if (optionAlquiler == 'Pinveco') {
-        $('.optionNorthgate').show();
-        $('.optionPinveco').hide();
-        $('.optionEnterprise').show();
-        $('.optionLogicar').show();
-    } else if (optionAlquiler == 'Enterprise') {
-        $('.optionNorthgate').show();
-        $('.optionPinveco').show();
-        $('.optionEnterprise').hide();
-        $('.optionLogicar').show();
-    } else if (optionAlquiler == 'Logicar') {
-        $('.optionNorthgate').show();
-        $('.optionPinveco').show();
-        $('.optionEnterprise').hide();
-        $('.optionLogicar').hide();
-    }
+    // if (optionAlquiler == 'Northgate') {
+    //     $('.optionNorthgate').hide();
+    //     $('.optionPinveco').show();
+    //     $('.optionEnterprise').show();
+    //     $('.optionLogicar').show();
+    // } else if (optionAlquiler == 'Pinveco') {
+    //     $('.optionNorthgate').show();
+    //     $('.optionPinveco').hide();
+    //     $('.optionEnterprise').show();
+    //     $('.optionLogicar').show();
+    // } else if (optionAlquiler == 'Enterprise') {
+    //     $('.optionNorthgate').show();
+    //     $('.optionPinveco').show();
+    //     $('.optionEnterprise').hide();
+    //     $('.optionLogicar').show();
+    // } else if (optionAlquiler == 'Logicar') {
+    //     $('.optionNorthgate').show();
+    //     $('.optionPinveco').show();
+    //     $('.optionEnterprise').hide();
+    //     $('.optionLogicar').hide();
+    // }
     
     $("#fechaAlquilerDesde").bind("change keyup", function(event) {
         let fechaDesde = $('#fechaAlquilerDesde').val();

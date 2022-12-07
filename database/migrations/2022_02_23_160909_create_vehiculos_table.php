@@ -22,6 +22,14 @@ return new class extends Migration
             $table->string('estado', 40);
             $table->string('propiedad', 40);
             $table->string('alquiler', 40)->nullable();
+            $table->foreignId('id_delegacion')
+            ->contrained('delegacions')
+            ->cascadeOnUpdate()
+            ->nullOnDelete();
+            $table->foreignId('id_alquiler')
+            ->contrained('alquilers')
+            ->cascadeOnUpdate()
+            ->nullOnDelete();
             $table->date('fechaAlquilerDesde')->nullable();
             $table->date('fechaAlquilerHasta')->nullable();
             $table->timestamps();

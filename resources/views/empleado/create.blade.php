@@ -6,6 +6,10 @@
     <h2>Añadir Empleados</h2>
 @stop
 
+@section('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@stop
+
 @section('content')
     <form action="/empleados" method="POST">
         @csrf
@@ -49,20 +53,19 @@
         <div class="mb-3">
             <label for="" class="form-label">Empresa</label>
             <select class="form-control" id="empresa" name="empresa" required>
-                <option class="optionValueEmpresa" value="{{old('empresa')}}">{{old('empresa')}}</option>
-                <option class="optionGLS" value="GLS">GLS</option>
-                <option class="optionSEUR" value="SEUR">SEUR</option>
-                <option class="optionCorreosExpress" value="CorreosExpress">CorreosExpress</option>
-                <option class="optionLavadosExpress" value="LavadosExpress">LavadosExpress</option>
+                <option value="">Seleccionar opción</option>
+                @foreach ($delegacionesEmpleados as $delegacionesEmpleados)
+                <option value="{{$delegacionesEmpleados->id}}-{{$delegacionesEmpleados->nombreEmpresa}}">{{$delegacionesEmpleados->nombreEmpresa}}</option>
+                @endforeach
             </select>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Cargo</label>
             <select class="form-control" id="cargo" name="cargo" required>
-                <option class="optionValueCargo" value="{{old('cargo')}}">{{old('cargo')}}</option>
-                <option class="optionLimpiador" value="Limpiador">Limpiador</option>
-                <option class="optionRepartidor" value="Repartidor">Repartidor</option>
-                <option class="optionAdministrativo" value="Administrativo">Administrativo</option>
+                <option value="">Seleccionar opción</option>
+                @foreach ($cargosEmpleados as $cargosEmpleados)
+                <option value="{{$cargosEmpleados->id}}-{{$cargosEmpleados->nombreCargo}}">{{$cargosEmpleados->nombreCargo}}</option>
+                @endforeach
             </select>
         </div>
         <a href="/empleados" class="btn btn-secondary">Cancelar</a>
@@ -70,26 +73,43 @@
     </form>
 @stop
 @section('js')
-<script>
-    $("#empresa").bind("change keyup", function(event){
-        var empresa = $('#empresa').val();
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-        if (empresa == 'LavadosExpress') {
-            $('#cargo').val('Limpiador');
-        } else {
-            $('#cargo').val('Repartidor');
-        }
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#empresa').select2({
+            language: "es",
+            theme: "classic",
+            width: '100%'
+        });
+
+        $('#cargo').select2({
+            language: "es",
+            theme: "classic",
+            width: '100%'
+        });
     });
 
-    $("#cargo").bind("change keyup", function(event){
-        var cargo = $('#cargo').val();
+    // $("#empresa").bind("change keyup", function(event){
+    //     var empresa = $('#empresa').val();
 
-        if (cargo == 'Limpiador') {
-            $('#empresa').val('LavadosExpress');
-        } else {
-            $('#empresa').val('GLS');
-        }
-    });
+    //     if (empresa == 'LavadosExpress') {
+    //         $('#cargo').val('Limpiador');
+    //     } else {
+    //         $('#cargo').val('Repartidor');
+    //     }
+    // });
+
+    // $("#cargo").bind("change keyup", function(event){
+    //     var cargo = $('#cargo').val();
+
+    //     if (cargo == 'Limpiador') {
+    //         $('#empresa').val('LavadosExpress');
+    //     } else {
+    //         $('#empresa').val('GLS');
+    //     }
+    // });
 
     // SELECT ESTADO
     var optionEstado = $('.optionValueEstado').val();
@@ -117,46 +137,46 @@
     }
 
     // SELECT EMPRESA
-    var optionEmpresa = $('.optionValueEmpresa').val();
+    // var optionEmpresa = $('.optionValueEmpresa').val();
 
-    if (optionEmpresa == 'GLS') {
-        $('.optionGLS').hide();
-        $('.optionSEUR').show();
-        $('.optionCorreosExpress').show();
-        $('.optionLavadosExpress').show();
-    } else if (optionEmpresa == 'SEUR') {
-        $('.optionGLS').show();
-        $('.optionSEUR').hide();
-        $('.optionCorreosExpress').show();
-        $('.optionLavadosExpress').show();
-    } else if (optionEmpresa == 'CorreosExpress') {
-        $('.optionGLS').show();
-        $('.optionSEUR').show();
-        $('.optionCorreosExpress').hide();
-        $('.optionLavadosExpress').show();
-    } else if (optionEmpresa == 'LavadosExpress') {
-        $('.optionGLS').show();
-        $('.optionSEUR').show();
-        $('.optionCorreosExpress').show();
-        $('.optionLavadosExpress').hide();
-    }
+    // if (optionEmpresa == 'GLS') {
+    //     $('.optionGLS').hide();
+    //     $('.optionSEUR').show();
+    //     $('.optionCorreosExpress').show();
+    //     $('.optionLavadosExpress').show();
+    // } else if (optionEmpresa == 'SEUR') {
+    //     $('.optionGLS').show();
+    //     $('.optionSEUR').hide();
+    //     $('.optionCorreosExpress').show();
+    //     $('.optionLavadosExpress').show();
+    // } else if (optionEmpresa == 'CorreosExpress') {
+    //     $('.optionGLS').show();
+    //     $('.optionSEUR').show();
+    //     $('.optionCorreosExpress').hide();
+    //     $('.optionLavadosExpress').show();
+    // } else if (optionEmpresa == 'LavadosExpress') {
+    //     $('.optionGLS').show();
+    //     $('.optionSEUR').show();
+    //     $('.optionCorreosExpress').show();
+    //     $('.optionLavadosExpress').hide();
+    // }
 
     // SELECT EMPRESA
-    var optionCargo = $('.optionValueCargo').val();
+    // var optionCargo = $('.optionValueCargo').val();
 
-    if (optionCargo == 'Limpiador') {
-        $('.optionLimpiador').hide();
-        $('.optionRepartidor').show();
-        $('.optionAdministrativo').show();
-    } else if (optionCargo == 'Repartidor') {
-        $('.optionLimpiador').show();
-        $('.optionRepartidor').hide();
-        $('.optionAdministrativo').show();
-    } else if (optionCargo == 'Administrativo') {
-        $('.optionLimpiador').show();
-        $('.optionRepartidor').show();
-        $('.optionAdministrativo').hide();
-    }
+    // if (optionCargo == 'Limpiador') {
+    //     $('.optionLimpiador').hide();
+    //     $('.optionRepartidor').show();
+    //     $('.optionAdministrativo').show();
+    // } else if (optionCargo == 'Repartidor') {
+    //     $('.optionLimpiador').show();
+    //     $('.optionRepartidor').hide();
+    //     $('.optionAdministrativo').show();
+    // } else if (optionCargo == 'Administrativo') {
+    //     $('.optionLimpiador').show();
+    //     $('.optionRepartidor').show();
+    //     $('.optionAdministrativo').hide();
+    // }
 
     // DNI - PASAPORTE
 

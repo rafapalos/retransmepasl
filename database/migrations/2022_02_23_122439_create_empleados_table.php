@@ -23,6 +23,14 @@ return new class extends Migration
             $table->string('estado',40);
             $table->string('empresa',40);
             $table->string('cargo',20);
+            $table->foreignId('id_delegacion')
+            ->contrained('delegacions')
+            ->cascadeOnUpdate()
+            ->nullOnDelete();
+            $table->foreignId('id_cargo')
+            ->contrained('cargos')
+            ->cascadeOnUpdate()
+            ->nullOnDelete();
             $table->timestamps();
         });
     }
